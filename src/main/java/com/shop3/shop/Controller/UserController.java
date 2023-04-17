@@ -47,9 +47,9 @@ public class UserController {
     }
 
     //id 조회
-    @GetMapping("/admin/{id}")
-    public ResponseEntity<Optional<User>> getUser(@PathVariable Long id){
-        Optional<User> user = userService.getUser(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id){
+        User user = userService.getUser(id);
         return ResponseEntity.ok(user);
     }
 
