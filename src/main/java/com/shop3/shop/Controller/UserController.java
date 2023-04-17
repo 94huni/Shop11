@@ -39,9 +39,10 @@ public class UserController {
         return ResponseEntity.ok("사용자가 등록되었습니다");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(User user){
-        User update = userService.updateUser(user);
+    //회원정보수정
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, User user){
+        User update = userService.updateUser(id, user);
         return ResponseEntity.ok(update);
     }
 

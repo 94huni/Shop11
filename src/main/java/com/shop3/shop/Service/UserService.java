@@ -26,8 +26,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User updateUser(User user){
-        User update = userRepository.findByUserid(user.getUserid());
+    public User updateUser(Long id ,User user){
+        User update = userRepository.findById(id).orElseThrow(()->new RuntimeException("찾을수없습니다."));
         update.setPassword(user.getPassword());
         update.setEmail(user.getEmail());
         update.setUsername(user.getUsername());
