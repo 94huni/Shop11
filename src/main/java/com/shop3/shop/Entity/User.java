@@ -3,6 +3,7 @@ package com.shop3.shop.Entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,8 @@ public class User {
     private String phone;
 
     private String roles;
+
+    private LocalDateTime createTime;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orderList;

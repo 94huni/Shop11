@@ -34,8 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("remember-me-key", userDetailsService());
         http
                 .authorizeRequests()
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/**").authenticated()
+                .antMatchers("/login", "/signup").permitAll()
                 .anyRequest().permitAll()
                 .and()
 //                .httpBasic()
