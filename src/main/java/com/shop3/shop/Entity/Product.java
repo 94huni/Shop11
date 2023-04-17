@@ -21,6 +21,8 @@ public class Product {
 
     private int stock;
 
+    private String image;
+
     private LocalDateTime start;
 
     private LocalDateTime end;

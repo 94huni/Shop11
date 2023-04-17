@@ -34,8 +34,8 @@ public class UserController {
 
     //로직을 service 로 옮겨구현
     @PostMapping("/signup")
-    public ResponseEntity<String> singUp(@RequestBody User user){
-        userService.signUp(user);
+    public ResponseEntity<String> singUp(@RequestBody User user, String password2){
+        userService.signUp(user, password2);
         return ResponseEntity.ok("사용자가 등록되었습니다");
     }
 
@@ -70,4 +70,14 @@ public class UserController {
         List<User> users = userService.allUser();
         return ResponseEntity.ok(users);
     }
+
+    //유저정보 삭제
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return ResponseEntity.ok("사용자가 삭제되었습니다");
+    }
+
+    //비밀번호 찾기
+
 }

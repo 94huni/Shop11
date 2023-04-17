@@ -16,13 +16,17 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public void signUp(User user){
+    public void signUp(User user, String password2){
         if (userRepository.findByUserid(user.getUserid())!=null) {
             throw new IllegalArgumentException("아이디가 " + user.getUserid() + "인 사용자가 이미 있습니다.");
         }
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setCreateTime(LocalDateTime.now());
-        user.setRoles("USER");
+        if(user.getPassword().equals(password2)){
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setCreateTime(LocalDateTime.now());
+            user.setRoles("USER");
+        }else {
+            throw new IllegalArgumentException("비밀번호가 다릅니다.");
+        }
         userRepository.save(user);
     }
 
@@ -46,5 +50,9 @@ public class UserService {
 
     public Optional<User> getUser(Long id){
         return userRepository.findById(id);
+    }
+
+    public void deleteUser(Long id){
+        userRepository.deleteById(id);
     }
 }
