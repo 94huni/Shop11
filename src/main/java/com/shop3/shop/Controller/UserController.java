@@ -6,7 +6,6 @@ import com.shop3.shop.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,13 +50,6 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id){
         User user = userService.getUser(id);
-        return ResponseEntity.ok(user);
-    }
-
-    //현재 접속된 id정보
-    @GetMapping("/current")
-    public ResponseEntity<User> getCurrentUser(Authentication authentication){
-        User user = userService.getCurrentUser(authentication);
         return ResponseEntity.ok(user);
     }
 
