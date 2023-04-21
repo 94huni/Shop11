@@ -6,6 +6,7 @@ import com.shop3.shop.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +41,20 @@ public class UserController {
         return ResponseEntity.ok("사용자가 등록되었습니다");
     }
 
-    //회원정보수정
-    @PutMapping("/update/{id}")
+    //관리자가 회원정보수정
+    @PutMapping("/admin/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, User user){
+        User update = userService.updateUser(id, user);
+        return ResponseEntity.ok(update);
+    }
+
+    //사용자가 직접 회원정보 수정
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, Authentication authentication){
+        User user = userService.getCurrentUser(authentication);
+        if(!user.getId().equals(id)){
+            throw new RuntimeException("본인정보만 수정할 수 있습니다!");
+        }
         User update = userService.updateUser(id, user);
         return ResponseEntity.ok(update);
     }

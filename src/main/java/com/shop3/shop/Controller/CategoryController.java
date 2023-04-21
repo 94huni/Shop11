@@ -18,7 +18,7 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategory(Long id){
-        Category category = categoryService.getCategory(id).get();
+        Category category = categoryService.getCategory(id);
         return ResponseEntity.ok(category);
     }
 

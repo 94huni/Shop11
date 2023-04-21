@@ -17,7 +17,10 @@ public class CartService {
 
     public void CreateCart(Long productId, Authentication authentication){
         User user = userService.getCurrentUser(authentication);
-        Product product = productService.getProduct(productId).orElseThrow(()->new RuntimeException("상품을 찾을수없습니다"));
+        Product product = productService.getProduct(productId);
+        if(product == null){
+            throw new RuntimeException("상품을 찾을수 없습니다!");
+        }
         Cart cart = user.getCart();
         if(cart == null){
             cart = new Cart();
@@ -29,7 +32,10 @@ public class CartService {
 
     public void removeCart(Long productId, Authentication authentication){
         User user = userService.getCurrentUser(authentication);
-        Product product = productService.getProduct(productId).orElseThrow(() -> new RuntimeException("상품을 찾을수 없습니다."));
+        Product product = productService.getProduct(productId);
+        if(product == null){
+            throw new RuntimeException("상품을 찾을수 없습니다!");
+        }
         Cart cart = user.getCart();
         if(cart == null){
             throw new RuntimeException("장바구니를 찾을수없습니다.");

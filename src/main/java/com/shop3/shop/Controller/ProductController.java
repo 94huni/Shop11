@@ -17,7 +17,7 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
 
-    //상품이름으로 가져오기
+    //상품번호로 가져오기
     @GetMapping("/{productName}")
     public ResponseEntity<Product> getProduct(@PathVariable String productName){
         Product product = productService.getProductName(productName);
@@ -39,7 +39,7 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
     //상품등록
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new RuntimeException(bindingResult.getAllErrors().toString());
@@ -48,7 +48,7 @@ public class ProductController {
         return ResponseEntity.ok(createProduct);
     }
     //상품수정
-    @PutMapping("/update/{productId}")
+    @PutMapping("/admin/update/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long productId,@Valid @RequestBody Product product, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new RuntimeException(bindingResult.getAllErrors().toString());
@@ -58,7 +58,7 @@ public class ProductController {
         return ResponseEntity.ok(updateProduct);
     }
     //상품삭제
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
         boolean isDelete = productService.deleteProduct(id);
         if(isDelete){

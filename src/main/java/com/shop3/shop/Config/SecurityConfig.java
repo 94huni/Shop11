@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +32,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        // 지금은 확인단계기 때문에 csrf 토큰 비활성화
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/api/user").hasAnyRole("ROLE_USER")
+                //user, cart 부분은 user 권한 사용가능
+                .antMatchers("/api/user","/api/cart").hasAnyRole("ROLE_USER")
+                // admin 부분은 ROLE_ADMIN 권한사용가능
                 .antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+                // product 부분과 나머지 요청에 대한것은 모두 허용
+                .antMatchers("/product/**").permitAll()
                 .anyRequest().permitAll();
         http.formLogin()
                 .loginProcessingUrl("/api/login")
-                .usernameParameter("userId")
+                .usernameParameter("userid")
                 .passwordParameter("password")
                 .successHandler(new SuccessHandler());
         http.sessionManagement()
