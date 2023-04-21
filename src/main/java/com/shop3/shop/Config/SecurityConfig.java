@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll();
         http.formLogin()
                 .loginProcessingUrl("/api/login")
-                .usernameParameter("loginId")
+                .usernameParameter("userId")
                 .passwordParameter("password")
                 .successHandler(new SuccessHandler());
         http.sessionManagement()
