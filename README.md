@@ -1,10 +1,12 @@
-# Shop Project
+# Shop Project Api
 
-/api/user<br><br>
+# 쇼핑몰 회원가입 상품등록, 장바구니 결제에대한 api입니다
 
+# GET /api/user/{id}
+사용자의 고유식별번호를 받아 해당 사용자의 정보를 조회하는 GET 요청의 대한 응답
 
-/signup   =  회원가입<br>
-/login    =  로그인<br>
-/update/{id} =  회원정보수정<br>
-/{id}     =  id 조회<br>
-/{userid} = 유저id조회<br>
+# GET /api/admin/user/{userid}
+관리자가 사용자아이디를 받아 해당 사용자의 정보를 조회하는 응답
+
+# GET /api/user/admin/allUser
+모든 유저의 정보를 조회하는 응답
