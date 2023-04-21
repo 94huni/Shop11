@@ -29,24 +29,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("remember-me-key", userDetailsService());
-        http
-                .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/**").authenticated()
-                .antMatchers("/login", "/signup").permitAll()
-                .anyRequest().permitAll()
-                .and()
-//                .httpBasic()
-//                .and()
-                .csrf().disable()
-                .formLogin().successHandler(new SuccessHandler())
-                .and()
-                .rememberMe()
-                .key("remember-me-key")
-                .rememberMeServices(rememberMeServices);
+
+        http.csrf().disable();
+        http.authorizeRequests()
+                .antMatchers("/api/user").hasAnyRole("ROLE_USER")
+                .antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+                .anyRequest().permitAll();
+        http.formLogin()
+                .loginProcessingUrl("/api/login")
+                .usernameParameter("loginId")
+                .passwordParameter("password")
+                .successHandler(new SuccessHandler());
+        http.sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true);
     }
 
     @Bean

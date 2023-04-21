@@ -1,6 +1,7 @@
 package com.shop3.shop.Entity;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,10 +24,12 @@ public class Product {
 
     private String image;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime start;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime end;
 
-    @ManyToMany
-    private List<Tag> tag;
+
+    @ManyToOne
+    private Category category;
 }

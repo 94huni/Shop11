@@ -31,6 +31,9 @@ public class User {
 
     private LocalDateTime createTime;
 
+    @OneToOne
+    private Cart cart;
+
     @OneToMany(mappedBy = "user")
     private List<Order> orderList;
 }

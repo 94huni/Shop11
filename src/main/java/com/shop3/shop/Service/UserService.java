@@ -4,6 +4,7 @@ import com.shop3.shop.Entity.User;
 import com.shop3.shop.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class UserService {
         if(user.getPassword().equals(password2)){
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setCreateTime(LocalDateTime.now());
-            user.setRoles("USER");
+            user.setRoles("ROLE_USER");
         }else {
             throw new IllegalArgumentException("비밀번호가 다릅니다.");
         }
@@ -46,6 +47,11 @@ public class UserService {
 
     public User getUser(String id){
         return userRepository.findByUserid(id);
+    }
+
+    public User getCurrentUser(Authentication authentication){
+        String username = authentication.getName();
+        return userRepository.findByUserid(username);
     }
 
     public User getUser(Long id){

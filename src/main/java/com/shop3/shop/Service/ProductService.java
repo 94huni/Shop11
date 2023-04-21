@@ -6,17 +6,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    private ProductRepository productRepository;
+    //RequiredArgConstructor 사용시 final 을 사용하지않으면 정상적으로 작동이안됨
+    private final ProductRepository productRepository;
+
 
     //아이디값에 대한 상품정보 가져오기
-    public Optional<Product> getProduct(Long id){
-        return productRepository.findById(id);
+    public Product getProduct(Long id){
+        return productRepository.findById(id).get();
     }
 
     //상품를 입력받아 상품정보 가져오기
@@ -35,17 +38,27 @@ public class ProductService {
     }
     //상품등록
     public Product createProduct(Product product){
-        Product create = new Product();
-        create.setName(product.getName());
-        create.setDetail(product.getDetail());
-        create.setCompany(product.getCompany());
-        create.setStart(LocalDateTime.now());
-        create.setTag(product.getTag());
-        create.setStock(product.getStock());
-        return create;
+
+        product.setStart(LocalDateTime.now());
+        product.setEnd(LocalDateTime.now().plusDays(14)); // 시작일 + 14일
+
+        return productRepository.save(product);
     }
+
+    //상품변경
+    public Product updateProduct(Long productId, Product product){
+        Product updateProduct = productRepository.findById(productId).orElseThrow(()->new RuntimeException("상품을 찾을 수 없습니다."));
+        updateProduct.setName(product.getName());
+        updateProduct.setDetail(product.getDetail());
+        updateProduct.setStock(product.getStock());
+        updateProduct.setImage(product.getImage());
+        updateProduct.setCategory(product.getCategory());
+        return productRepository.save(updateProduct);
+    }
+
     //상품삭제
-    public void deleteProduct(Long id){
+    public boolean deleteProduct(Long id){
         productRepository.deleteById(id);
+        return true;
     }
 }
