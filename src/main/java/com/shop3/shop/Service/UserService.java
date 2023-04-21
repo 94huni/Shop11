@@ -3,6 +3,9 @@ package com.shop3.shop.Service;
 import com.shop3.shop.Entity.User;
 import com.shop3.shop.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,6 +42,12 @@ public class UserService {
         update.setPhone(user.getPhone());
         update.setAddress(user.getAddress());
         return update;
+    }
+
+    //페이징처리를 적용시킨 allUser
+    public Page<User> getALlUser(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
     }
 
     public List<User> allUser(){

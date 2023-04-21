@@ -3,8 +3,12 @@ package com.shop3.shop.Service;
 import com.shop3.shop.Entity.Product;
 import com.shop3.shop.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -19,7 +23,8 @@ public class ProductService {
 
     //아이디값에 대한 상품정보 가져오기
     public Product getProduct(Long id){
-        return productRepository.findById(id).get();
+        return productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("이 번호로 제품을 찾을수없습니다!" + id));
     }
 
     //상품를 입력받아 상품정보 가져오기
@@ -36,6 +41,7 @@ public class ProductService {
     public List<Product> getAllProduct(){
         return productRepository.findAll();
     }
+
     //상품등록
     public Product createProduct(Product product){
 

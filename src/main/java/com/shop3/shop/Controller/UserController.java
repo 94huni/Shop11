@@ -5,6 +5,7 @@ import com.shop3.shop.Repository.UserRepository;
 import com.shop3.shop.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -83,6 +84,8 @@ public class UserController {
             return ResponseEntity.ok(user);
         }
     }
+
+    //페이징처리가 된 모든유저정보  가져오기
 
     //모든유저정보 가져오기
     @GetMapping("/admin/allUser")

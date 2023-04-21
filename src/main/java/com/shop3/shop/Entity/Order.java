@@ -1,5 +1,6 @@
 package com.shop3.shop.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,12 +18,14 @@ public class Order {
     private String trackingNumber;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     @ManyToMany
     @JoinTable(name = "order_product",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JsonIgnore
     private List<Product> productList;
 
     private LocalDateTime orderTime;

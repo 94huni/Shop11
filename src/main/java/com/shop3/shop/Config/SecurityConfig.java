@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // admin 부분은 ROLE_ADMIN 권한사용가능
                 .antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
                 // product 부분과 나머지 요청에 대한것은 모두 허용
-                .antMatchers("/product/**").permitAll()
+                .antMatchers("/product/**","/signup").permitAll()
                 .anyRequest().permitAll();
         http.formLogin()
                 .loginProcessingUrl("/api/login")

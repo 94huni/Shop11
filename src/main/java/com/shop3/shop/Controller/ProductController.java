@@ -3,6 +3,9 @@ package com.shop3.shop.Controller;
 import com.shop3.shop.Entity.Product;
 import com.shop3.shop.Service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,27 +20,19 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
 
-    //상품번호로 가져오기
-    @GetMapping("/{productName}")
-    public ResponseEntity<Product> getProduct(@PathVariable String productName){
-        Product product = productService.getProductName(productName);
-        return ResponseEntity.ok(product);
-    }
     //전체상품
     @GetMapping("/allProduct")
-    public ResponseEntity<List<Product>> getAllProduct(){
-        List<Product> products = productService.getAllProduct();
-        return ResponseEntity.ok(products);
+    public List<Product> getAllProducts(){
+        return productService.getAllProduct();
     }
     //상품아이디로 가져오기
-    @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long productId){
-        Product product = productService.getProduct(productId);
-        if(product != null){
-            return ResponseEntity.ok(product);
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable Long id){
+        return productService.getProduct(id);
     }
+
+    //페이징 처리가된 전체상품정보
+
     //상품등록
     @PostMapping("/admin/create")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product, BindingResult bindingResult){

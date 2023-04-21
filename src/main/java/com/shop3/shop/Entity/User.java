@@ -1,5 +1,6 @@
 package com.shop3.shop.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -32,8 +33,10 @@ public class User {
     private LocalDateTime createTime;
 
     @OneToOne
+    @JsonIgnore
     private Cart cart;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Order> orderList;
 }
