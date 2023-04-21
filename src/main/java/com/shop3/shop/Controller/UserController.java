@@ -1,17 +1,27 @@
 package com.shop3.shop.Controller;
 
+import com.shop3.shop.DTO.LoginFormDto;
 import com.shop3.shop.Entity.User;
 import com.shop3.shop.Repository.UserRepository;
 import com.shop3.shop.Service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +31,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
     //회원가입
 //    @PostMapping("/signup")
@@ -37,9 +48,33 @@ public class UserController {
 
     //로직을 service 로 옮겨구현
     @PostMapping("/signup")
-    public ResponseEntity<String> singUp(@RequestBody User user, String password2){
+    public ResponseEntity<String> singUp(@RequestBody User user,@RequestParam String password2){
         userService.signUp(user, password2);
-        return ResponseEntity.ok("사용자가 등록되었습니다");
+        return ResponseEntity.status(HttpStatus.CREATED).body("사용자가 등럭되었습니다."); //201 Created
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginFormDto loginFormDto){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginFormDto.getUserid(),
+                        loginFormDto.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String userid = "your_userid";
+        String password = "your_password";
+        String credentials = userid + ":" + password;
+        String encodedCredentials = Base64.getEncoder().encodeToString(credentials.getBytes());
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Basic" + encodedCredentials);
+
+        return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).build();
+
+
     }
 
     //관리자가 회원정보수정
@@ -47,6 +82,17 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable Long id, User user){
         User update = userService.updateUser(id, user);
         return ResponseEntity.ok(update);
+    }
+
+    //관리자가 ADMIN 권한 부여
+    @PutMapping("/admin/authority/{id}")
+    public ResponseEntity<User> updateUserAsAdmin(@PathVariable Long id, @Valid @RequestBody User user, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new RuntimeException(bindingResult.getAllErrors().toString());
+        }
+
+        User updateUser = userService.updateUserAsAdmin(id, user);
+        return ResponseEntity.ok(updateUser);
     }
 
     //사용자가 직접 회원정보 수정
@@ -91,14 +137,14 @@ public class UserController {
     @GetMapping("/admin/allUser")
     public ResponseEntity<List<User>> getAllUser(){
         List<User> users = userService.allUser();
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(users); //200 Ok
     }
 
     //유저정보 삭제
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
-        return ResponseEntity.ok("사용자가 삭제되었습니다");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("사용자가 삭제되었습니다."); //204
     }
 
     //비밀번호 찾기

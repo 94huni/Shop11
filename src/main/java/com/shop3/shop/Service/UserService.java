@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -69,5 +70,11 @@ public class UserService {
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
+    }
+
+    public User updateUserAsAdmin(Long id, User user) {
+        User updateUser = userRepository.findById(id).orElseThrow(()->new EntityNotFoundException("유저를 찾을수 없습니다."));
+        updateUser.setRoles("ROLE_ADMIN");
+        return userRepository.save(updateUser);
     }
 }

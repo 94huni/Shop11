@@ -3,6 +3,7 @@ package com.shop3.shop.Controller;
 import com.shop3.shop.Entity.Category;
 import com.shop3.shop.Service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,6 @@ public class CategoryController {
             throw new RuntimeException(bindingResult.getAllErrors().toString());
         }
 
-        return ResponseEntity.ok(categoryService.createCategory(category));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(category)); //201
     }
 }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 지금은 확인단계기 때문에 csrf 토큰 비활성화
         http.csrf().disable();
+        http.httpBasic();
         http.authorizeRequests()
                 //user, cart 부분은 user 권한 사용가능
                 .antMatchers("/api/user","/api/cart").hasAnyRole("ROLE_USER")
@@ -66,6 +68,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 return new org.springframework.security.core.userdetails.User(user.getUserid(), user.getPassword(), authorities);
             }
         };
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception{
+        return super.authenticationManagerBean();
     }
 
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
