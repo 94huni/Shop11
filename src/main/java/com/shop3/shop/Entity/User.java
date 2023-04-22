@@ -35,10 +35,10 @@ public class User {
     private LocalDateTime createTime;
 
     @OneToOne
-    @JsonIgnore
+    //@JsonIgnore
     private Cart cart;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Order> orderList;
 }

@@ -1,5 +1,6 @@
 package com.shop3.shop.Service;
 
+import com.shop3.shop.DTO.UserDto;
 import com.shop3.shop.Entity.User;
 import com.shop3.shop.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,21 +52,18 @@ public class UserService {
         return userRepository.findUserByUseridContaining(searchKeyword ,pageable);
     }
 
-    public List<User> allUser(){
-        return userRepository.findAll();
+    //유저아이디로 정보를 보여주는 service
+    public UserDto getUser(String userid){
+        return userRepository.getByUserid(userid);
     }
 
-    public User getUser(String id){
-        return userRepository.findByUserid(id);
-    }
-
+    //현재접속자의 정보를 보여주는 service
     public User getCurrentUser(Authentication authentication){
-        String username = authentication.getName();
-        return userRepository.findByUserid(username);
+        return userRepository.findByUserid(authentication.getName());
     }
 
-    public User getUser(Long id){
-        return userRepository.findById(id).get();
+    public UserDto getUser(Long id){
+        return userRepository.getUserById(id);
     }
 
     public void deleteUser(Long id){

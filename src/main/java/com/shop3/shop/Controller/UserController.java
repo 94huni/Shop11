@@ -1,6 +1,7 @@
 package com.shop3.shop.Controller;
 
 import com.shop3.shop.DTO.LoginFormDto;
+import com.shop3.shop.DTO.UserDto;
 import com.shop3.shop.Entity.User;
 import com.shop3.shop.Repository.UserRepository;
 import com.shop3.shop.Service.UserService;
@@ -108,9 +109,9 @@ public class UserController {
 
     //id 조회
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id){
-        User user = userService.getUser(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id){
+        UserDto userDto = userService.getUser(id);
+        return ResponseEntity.ok(userDto);
     }
 
     //현재 접속중인 아이디조회
@@ -122,8 +123,8 @@ public class UserController {
 
     //userid 조회
     @GetMapping("/admin/{userid}")
-    public ResponseEntity<User> getUser(@PathVariable String userid){
-        User user = userService.getUser(userid);
+    public ResponseEntity<UserDto> getUser(@PathVariable String userid){
+        UserDto user = userService.getUser(userid);
         if(user == null){
             return ResponseEntity.notFound().build(); //404
         } else {
@@ -141,13 +142,14 @@ public class UserController {
 //    }
 
     //유저정보 페이징처리
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/getAllUser")
     public ResponseEntity<Page<User>> getAllUser(@RequestParam(defaultValue = "0")int page,
                                                  @RequestParam(defaultValue = "10")int size,
                                                  @RequestParam(defaultValue = "") String searchKeyword,
-                                                 @Valid @RequestBody Authentication authentication){
+                                                 Authentication authentication){
         User user = userService.getCurrentUser(authentication);
-        if(user.getRoles() != "ROLE_ADMIN"){
+        if(!user.getRoles().equals("ROLE_ADMIN")){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //403 FORBIDDEN
         }
         return ResponseEntity.ok(userService.getAllUser(page, size, searchKeyword)); //200 OK
