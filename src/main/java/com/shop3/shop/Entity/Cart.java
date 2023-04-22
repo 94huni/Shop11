@@ -14,17 +14,15 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @ManyToOne
-    @JsonIgnore
+    @OneToOne
+    //@JsonIgnore
     private User user;
-
 
     @ManyToMany
     @JoinTable(name = "cart_product",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    @JsonIgnore
+    //@JsonIgnore
     private List<Product> products = new ArrayList<>();
 }
 

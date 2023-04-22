@@ -15,9 +15,10 @@ public class CartService {
     private final UserService userService;
     private final ProductService productService;
 
-    public void CreateCart(Long productId, Authentication authentication){
+    public Cart createCart(Long productId, Authentication authentication){
         User user = userService.getCurrentUser(authentication);
         Product product = productService.getProduct(productId);
+
         if(product == null){
             throw new RuntimeException("상품을 찾을수 없습니다!");
         }
@@ -27,10 +28,10 @@ public class CartService {
             cart.setUser(user);
         }
         cart.getProducts().add(product);
-        cartRepository.save(cart);
+        return cartRepository.save(cart);
     }
 
-    public void removeCart(Long productId, Authentication authentication){
+    public Cart removeCart(Long productId, Authentication authentication){
         User user = userService.getCurrentUser(authentication);
         Product product = productService.getProduct(productId);
         if(product == null){
@@ -41,7 +42,7 @@ public class CartService {
             throw new RuntimeException("장바구니를 찾을수없습니다.");
         }
         cart.getProducts().remove(product);
-        cartRepository.save(cart);
+        return cartRepository.save(cart);
     }
 
     //결제완료시 장바구니를 지워주는 메서드
