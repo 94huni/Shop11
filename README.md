@@ -12,55 +12,53 @@
 ## USER
 ### GET /api/user/{id}
 사용자의 고유식별번호를 받아 해당 사용자의 정보를 조회하는 GET 요청의 대한 응답
-curl -X GET "http://localhost:8080/api/user/1" -H "accept: */*" -H "authorization: basic token"
-http://localhost:8080/api/user/1
+
 
 
 ### GET /api/user/admin/{userid}
-관리자가 사용자아이디를 받아 해당 사용자의 정보를 조회하는 응답
+관리자가 사용자아이디를 받아 해당 사용자의 정보를 조회하는 응답<br>
 curl -X GET "http://localhost:8080/api/user/admin/test" -H "accept: */*" -H "authorization: basic token"
 
 
 
 ### GET /api/user/admin/getAllUser
-모든 유저의 정보를 조회하는 응답
+모든 유저의 정보를 조회하는 응답<br>
 curl -X GET "http://localhost:8080/api/user/admin/getAllUser?authenticated=true&credentials=%7B%7D&details=%7B%7D&page=0&principal=%7B%7D&size=10" -H "accept: */*" -H "authorization: basic token"
-모든 유저정보에대한 json을 받을수있다.
 
 ### GET /api/user/current
-현재 접속중인 유저의 정보를 조회하는 GET 요청의 대한 응답
+현재 접속중인 유저의 정보를 조회하는 GET 요청의 대한 응답<br>
 curl -X GET "http://localhost:8080/api/user/current?authenticated=true&credentials=%7B%7D&details=%7B%7D&principal=%7B%7D" -H "accept: */*" -H "authorization: Basic token"
 
 
 
 ### POST /api/user/signup
-회원가입 하는 요청
-{
-  "address": "Testuser",
-  "email": "TestEmail@test.com",
-  "password": "1111",
-  "phone": "111-222-3333",
-  "userid": "test55",
-  "username": "testname"
-}
+회원가입 하는 요청<br>
+{<br>
+  "address": "Testuser",<br>
+  "email": "TestEmail@test.com",<br>
+  "password": "1111",<br>
+  "phone": "111-222-3333",<br>
+  "userid": "test55",<br>
+  "username": "testname"<br>
+}<br>
 
-curl -X POST "http://localhost:8080/api/user/signup?password2=1234" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"address\": \"Testuser\", \"email\": \"TestEmail@test.com\", \"password\": \"1234\", \"phone\": \"111-222-3333\", \"userid\": \"test55\", \"username\": \"testname\"}"
+curl -X POST "http://localhost:8080/api/user/signup?password2=1234" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"address\": \"Testuser\", \"email\": \"TestEmail@test.com\", \"password\": \"1234\", \"phone\": \"111-222-3333\", \"userid\": \"test55\", \"username\": \"testname\"}"<br>
 
 요청과 사용자가 등록되었다는 response body 를 받을수있다
 
 
 ### POST /api/user/login
 로그인 하는 요청 Basic 인증키 발급
-{
-  "password": "1234",
-  "userid": "test"
-}
+{<br>
+  "password": "1234",<br>
+  "userid": "test"<br>
+}<br>
 curl -X POST "http://localhost:8080/api/user/login" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"password\": \"1234\", \"userid\": \"test\"}"
+<br>
+http://localhost:8080/api/user/login<br>
 
-http://localhost:8080/api/user/login
-
-authorization: BasiceW91cl91c2VyaWQ6eW91cl9wYXNzd29yZA== 
-basic 코드를 받을수있다
+authorization: BasiceW91cl91c2VyaWQ6eW91cl9wYXNzd29yZA== <br>
+basic 코드를 받을수있다<br>
 
 ### PUT /api/user/update/{id}
 현재 사용하고 있는 사람이 직접 회원정보를 수정할수있는 요청
@@ -70,21 +68,21 @@ basic 코드를 받을수있다
 관리자가 임의로 다른 정보를 수정하는 요청
 
 ### PUT /api/user/admin/authority/{id}
-관리자가 회원정보에서 ROLE_USER 권한을 ROLE_ADMIN으로 상승시키는 요청
-curl -X PUT "http://localhost:8080/api/user/admin/authority/1" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"address\": \"string\", \"cart\": { \"id\": 0, \"products\": [ { \"category\": { \"id\": 0, \"name\": \"string\" }, \"company\": \"string\", \"detail\": \"string\", \"end\": \"2023-04-22T19:01:42.489Z\", \"id\": 0, \"image\": \"string\", \"name\": \"string\", \"price\": 0, \"start\": \"2023-04-22T19:01:42.489Z\", \"stock\": 0 } ] }, \"createTime\": \"2023-04-22T19:01:42.489Z\", \"email\": \"string\", \"id\": 0, \"orderList\": [ { \"amount\": 0, \"deliveryCompl\": \"2023-04-22T19:01:42.489Z\", \"deliveryStart\": \"2023-04-22T19:01:42.489Z\", \"id\": 0, \"orderTime\": \"2023-04-22T19:01:42.489Z\", \"trackingNumber\": \"string\" } ], \"password\": \"string\", \"phone\": \"string\", \"roles\": \"string\", \"userid\": \"string\", \"username\": \"string\"}"
+관리자가 회원정보에서 ROLE_USER 권한을 ROLE_ADMIN으로 상승시키는 요청<br><br>
+curl -X PUT "http://localhost:8080/api/user/admin/authority/1" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"address\": \"string\", \"cart\": { \"id\": 0, \"products\": [ { \"category\": { \"id\": 0, \"name\": \"string\" }, \"company\": \"string\", \"detail\": \"string\", \"end\": \"2023-04-22T19:01:42.489Z\", \"id\": 0, \"image\": \"string\", \"name\": \"string\", \"price\": 0, \"start\": \"2023-04-22T19:01:42.489Z\", \"stock\": 0 } ] }, \"createTime\": \"2023-04-22T19:01:42.489Z\", \"email\": \"string\", \"id\": 0, \"orderList\": [ { \"amount\": 0, \"deliveryCompl\": \"2023-04-22T19:01:42.489Z\", \"deliveryStart\": \"2023-04-22T19:01:42.489Z\", \"id\": 0, \"orderTime\": \"2023-04-22T19:01:42.489Z\", \"trackingNumber\": \"string\" } ], \"password\": \"string\", \"phone\": \"string\", \"roles\": \"string\", \"userid\": \"string\", \"username\": \"string\"}"<br><br>
 
-Request URL
-http://localhost:8080/api/user/admin/authority/1
+Request URL<br>
+http://localhost:8080/api/user/admin/authority/1<br>
 
-해당 식별번호의 사용자의 roles 데이터에서
+해당 식별번호의 사용자의 roles 데이터에서<br>
 
 "roles": "ROLE_ADMIN" 데이터와 200 ok 
 
 
 ### DELETE /api/user/delete/{id}
-사용자의 정보를 삭제하는 요청
+사용자의 정보를 삭제하는 요청<br>
 
-curl -X DELETE "http://localhost:8080/api/user/delete/5" -H "accept: */*"
+curl -X DELETE "http://localhost:8080/api/user/delete/5" -H "accept: */*"<br>
 
 완료시 204 No Content를 받는다
 
