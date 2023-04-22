@@ -46,9 +46,9 @@ public class UserService {
     }
 
     //페이징처리를 적용시킨 allUser
-    public Page<User> getALlUser(int page, int size){
+    public Page<User> getAllUser(int page, int size, String searchKeyword){
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findAll(pageable);
+        return userRepository.findUserByUseridContaining(searchKeyword ,pageable);
     }
 
     public List<User> allUser(){

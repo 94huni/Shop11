@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -49,6 +50,12 @@ public class ProductService {
         product.setEnd(LocalDateTime.now().plusDays(14)); // 시작일 + 14일
 
         return productRepository.save(product);
+    }
+
+    //페이징처리가 완료된 전체 페이지 가져오기
+    public Page<Product> getProductPage(int page, int size, String searchKeyword){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("start").descending());
+        return productRepository.findProductByNameContaining(searchKeyword, pageable);
     }
 
     //상품변경

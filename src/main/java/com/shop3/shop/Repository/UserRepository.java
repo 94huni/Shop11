@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUserid(String username);
 
-    Page<User> findAll(Pageable pageable);
+    //SELECT * FROM name LIKE CONCAT(`%', #{searchKeyword}, '%') ORDER BY id ASC LIMIT #{pageable.pageSize} OFFSET #{pageable.offset}
+    Page<User> findUserByUseridContaining(String searchKeyword, Pageable pageable);
 }

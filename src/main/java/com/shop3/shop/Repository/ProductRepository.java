@@ -15,6 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //SELECT * FROM product WHERE company = ?
     List<Product> findByCompany(String Company);
 
-    //SELECT * FROM product LIMIT {size} OFFSET {page * size}
-    Page<Product>  findAll(Pageable pageable);
+    //SELECT * FROM product ORDER BY start DESC
+    Page<Product> findProductByNameContaining(String searchKeyword, Pageable pageable);
+
+
 }

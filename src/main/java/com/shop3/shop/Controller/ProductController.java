@@ -22,11 +22,21 @@ public class ProductController {
     private final ProductService productService;
 
     //전체상품
-    @GetMapping("/allProduct")
-    public ResponseEntity<List<Product>> getAllProduct(){
-        List<Product> product = productService.getAllProduct();
-        return ResponseEntity.ok(product); //200 OK
+//    @GetMapping("/allProduct")
+//    public ResponseEntity<List<Product>> getAllProduct(){
+//        List<Product> product = productService.getAllProduct();
+//        return ResponseEntity.ok(product); //200 OK
+//    }
+
+    //전체상품 페이징처리
+    @GetMapping("/getAllProduct")
+    public ResponseEntity<Page<Product>> getAllProduct(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size,
+                                                       @RequestParam(defaultValue = "") String searchKeyword){
+
+        return ResponseEntity.ok(productService.getProductPage(page, size, searchKeyword));
     }
+
     //상품아이디로 가져오기
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id){

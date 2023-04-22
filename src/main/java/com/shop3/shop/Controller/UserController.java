@@ -134,11 +134,25 @@ public class UserController {
     //페이징처리가 된 모든유저정보  가져오기
 
     //모든유저정보 가져오기
-    @GetMapping("/admin/allUser")
-    public ResponseEntity<List<User>> getAllUser(){
-        List<User> users = userService.allUser();
-        return ResponseEntity.ok(users); //200 Ok
+//    @GetMapping("/admin/allUser")
+//    public ResponseEntity<List<User>> getAllUser(){
+//        List<User> users = userService.allUser();
+//        return ResponseEntity.ok(users); //200 Ok
+//    }
+
+    //유저정보 페이징처리
+    @GetMapping("/admin/getAllUser")
+    public ResponseEntity<Page<User>> getAllUser(@RequestParam(defaultValue = "0")int page,
+                                                 @RequestParam(defaultValue = "10")int size,
+                                                 @RequestParam(defaultValue = "") String searchKeyword,
+                                                 @Valid @RequestBody Authentication authentication){
+        User user = userService.getCurrentUser(authentication);
+        if(user.getRoles() != "ROLE_ADMIN"){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); //403 FORBIDDEN
+        }
+        return ResponseEntity.ok(userService.getAllUser(page, size, searchKeyword)); //200 OK
     }
+
 
     //유저정보 삭제
     @DeleteMapping("/delete/{id}")
