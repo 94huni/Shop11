@@ -125,9 +125,9 @@ public class UserController {
     public ResponseEntity<User> getUser(@PathVariable String userid){
         User user = userService.getUser(userid);
         if(user == null){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); //404
         } else {
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(user); //200
         }
     }
 

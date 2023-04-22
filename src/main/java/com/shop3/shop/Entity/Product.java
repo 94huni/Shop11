@@ -18,6 +18,8 @@ public class Product {
 
     private String company;
 
+    private int price;
+
     private String detail;
 
     private int stock;
